@@ -247,4 +247,18 @@ public class EventController : Controller
         return View(events);
     }
 
+    [HttpGet]
+    public async Task<IActionResult> SqlSearch(string? search)
+    {
+        var events = await _context.Events
+            .Where(e =>
+                string.IsNullOrEmpty(search) ||
+                e.Title.Contains(search))
+            .ToListAsync();
+
+        ViewBag.Search = search;
+
+        return View(events);
+    }
+
     }

@@ -1,0 +1,36 @@
+@model IEnumerable<EventFlow.Models.Event>
+
+@{
+    Layout = "_AdminLayout";
+}
+
+<h2>SQL Injection Lab</h2>
+
+<form method="get">
+
+    <input class="form-control"
+           name="search"
+           value="@ViewBag.Search" />
+
+    <button class="btn btn-primary mt-2">
+
+        Search
+
+    </button>
+
+</form>
+
+<hr />
+
+<table class="table">
+
+@foreach(var item in Model)
+{
+    <tr>
+
+        <td>@item.Title</td>
+
+    </tr>
+}
+
+</table>

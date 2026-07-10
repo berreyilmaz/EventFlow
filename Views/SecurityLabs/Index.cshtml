@@ -3,17 +3,66 @@
     ViewData["Title"] = "Security Labs";
 }
 
-<h2 class="mb-4">
-    🔐 Security Labs
-</h2>
+<div class="container mt-4">
 
-<div class="list-group">
+    <h2 class="mb-4">
+        🔐 OWASP Security Laboratories
+    </h2>
 
-    <a asp-action="Csrf"
-       class="list-group-item list-group-item-action">
+    <div class="list-group shadow">
 
-        🛡️ Lab 2 - CSRF
+        <a asp-action="Idor"
+           class="list-group-item list-group-item-success">
 
-    </a>
+            ✅ Lab 1 - Broken Access Control (IDOR)
+
+        </a>
+
+        <a asp-action="Csrf"
+           class="list-group-item list-group-item-success">
+
+            ✅ Lab 2 - Cross Site Request Forgery (CSRF)
+
+        </a>
+
+        <a asp-action="Xss"
+           class="list-group-item list-group-item-success">
+
+            ✅ Lab 3 - Stored Cross Site Scripting (XSS)
+
+        </a>
+
+        <a asp-action="SqlInjection"
+           class="list-group-item list-group-item-success">
+
+            ✅ Lab 4 - SQL Injection
+
+        </a>
+
+        <div class="list-group-item">
+
+            ⏳ Lab 5 - File Upload Security
+
+        </div>
+
+        <div class="list-group-item">
+
+            ⏳ Lab 6 - Brute Force Protection
+
+        </div>
+
+        <div class="list-group-item">
+
+            ⏳ Lab 7 - Rate Limiting
+
+        </div>
+
+        <div class="list-group-item">
+
+            ⏳ Lab 8 - Secure HTTP Headers
+
+        </div>
+
+    </div>
 
 </div>
