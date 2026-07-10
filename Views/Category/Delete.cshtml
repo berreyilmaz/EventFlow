@@ -1,0 +1,42 @@
+@model EventFlow.Models.Category
+
+@{
+    ViewData["Title"] = "Kategoriyi Pasife Al";
+}
+
+<div class="container mt-4">
+
+    <div class="alert alert-warning">
+
+        <h4>Dikkat!</h4>
+
+        <p>
+
+            <strong>@Model.Name</strong>
+
+            kategorisini pasife almak istediğinize emin misiniz?
+
+        </p>
+
+    </div>
+
+    <form asp-action="Delete" method="post">
+
+        <input asp-for="Id" type="hidden"/>
+
+        <button class="btn btn-danger">
+
+            Evet, Pasife Al
+
+        </button>
+
+        <a asp-action="Index"
+           class="btn btn-secondary">
+
+            Vazgeç
+
+        </a>
+
+    </form>
+
+</div>

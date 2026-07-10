@@ -28,6 +28,24 @@
                     </ul>
                 </div>
             </div>
+            @if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                <span>Hoş geldin @User.Identity.Name</span>
+
+                <form asp-controller="Account"
+                    asp-action="Logout"
+                    method="post"
+                    style="display:inline;">
+                    <button type="submit" class="btn btn-link">
+                        Çıkış Yap
+                    </button>
+                </form>
+            }
+            else
+            {
+                <a asp-controller="Account" asp-action="Login">Giriş Yap</a>
+                <a asp-controller="Account" asp-action="Register">Kayıt Ol</a>
+            }
         </nav>
     </header>
     <div class="container">

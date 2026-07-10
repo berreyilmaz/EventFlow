@@ -1,0 +1,83 @@
+@model EventFlow.ViewModels.Event.EventCreateViewModel
+
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Yeni Etkinlik";
+}
+
+<h2>Yeni Etkinlik</h2>
+
+<hr />
+
+<form asp-action="Create" method="post">
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="Title" class="form-label"></label>
+        <input asp-for="Title" class="form-control"/>
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Location" class="form-label"></label>
+        <input asp-for="Location" class="form-control"/>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="CategoryId" class="form-label">
+            Kategori
+        </label>
+
+        <select asp-for="CategoryId"
+                asp-items="ViewBag.Categories"
+                class="form-select">
+
+            <option value="">Kategori Seçiniz</option>
+
+        </select>
+    </div>
+
+        <div class="mb-3">
+        <label asp-for="StartDate" class="form-label"></label>
+        <input asp-for="StartDate"
+            type="datetime-local"
+            class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="EndDate" class="form-label"></label>
+        <input asp-for="EndDate"
+            type="datetime-local"
+            class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Capacity" class="form-label"></label>
+        <input asp-for="Capacity"
+            class="form-control" />
+    </div>
+
+    <button class="btn btn-success">
+        Etkinliği Oluştur
+    </button>
+
+    <a asp-controller="Dashboard"
+    asp-action="Index"
+    class="btn btn-secondary">
+        İptal
+    </a>
+
+
+</form>
+    
+@section Scripts{
+@{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+}

@@ -1,0 +1,83 @@
+@model EventFlow.ViewModels.Category.CategoryEditViewModel
+
+@{
+    ViewData["Title"] = "Yeni Kategori";
+}
+
+
+<div class="container mt-4">
+<input asp-for="Id" type="hidden"/>
+
+    <h2>Kategori Düzenle</h2>
+
+    <hr />
+
+    <form asp-action="Edit" method="post">
+
+        <div asp-validation-summary="ModelOnly"
+             class="text-danger">
+        </div>
+
+        <div class="mb-3">
+
+            <label asp-for="Name" class="form-label"></label>
+
+            <input asp-for="Name"
+                   class="form-control" />
+
+            <span asp-validation-for="Name"
+                  class="text-danger"></span>
+
+        </div>
+
+        <div class="mb-3">
+
+            <label asp-for="Description"
+                   class="form-label"></label>
+
+            <textarea asp-for="Description"
+                      rows="4"
+                      class="form-control">
+            </textarea>
+
+        </div>
+
+        <div class="mb-3">
+
+            <label asp-for="Icon"
+                   class="form-label"></label>
+
+            <input asp-for="Icon"
+                   class="form-control" />
+
+        </div>
+
+        <div class="form-check mb-3">
+
+            <input asp-for="IsActive"
+                class="form-check-input"/>
+
+            <label asp-for="IsActive"
+                class="form-check-label">
+            </label>
+
+        </div>
+
+        <button class="btn btn-success">
+            Kaydet
+        </button>
+
+        <a asp-action="Index"
+           class="btn btn-secondary">
+            Vazgeç
+        </a>
+
+    </form>
+
+</div>
+
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

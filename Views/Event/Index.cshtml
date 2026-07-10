@@ -1,0 +1,79 @@
+@model IEnumerable<EventFlow.Models.Event>
+
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Etkinlikler";
+}
+
+<div class="d-flex justify-content-between mb-3">
+
+    <h2>Etkinlikler</h2>
+
+    <a asp-action="Create"
+       class="btn btn-primary">
+
+        Yeni Etkinlik
+
+    </a>
+
+</div>
+
+<table class="table table-bordered">
+
+    <thead>
+
+        <tr>
+
+            <th>Başlık</th>
+
+            <th>Kategori</th>
+
+            <th>Konum</th>
+
+            <th>Kontenjan</th>
+
+            <th>Oluşturan</th>
+
+            <th>İşlemler</th>
+
+        </tr>
+
+
+        
+
+    </thead>
+
+    <tbody>
+
+@foreach(var item in Model)
+{
+    <tr>
+
+        <td>@item.Title</td>
+
+        <td>@item.Category.Name</td>
+
+        <td>@item.Location</td>
+
+        <td>@item.Capacity</td>
+
+        <td>@item.Organizer.FullName</td>
+
+        <td>
+
+            <a asp-action="Edit"
+            asp-route-id="@item.Id"
+            class="btn btn-warning btn-sm">
+
+                Düzenle
+
+            </a>
+
+        </td>
+
+    </tr>
+}
+
+    </tbody>
+
+</table>

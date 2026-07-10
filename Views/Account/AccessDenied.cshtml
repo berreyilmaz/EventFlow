@@ -1,0 +1,19 @@
+@{
+    ViewData["Title"] = "Access Denied";
+}
+
+<div class="container mt-5 text-center">
+    <h1 class="display-4 text-danger">403</h1>
+
+    <h3>Erişim Reddedildi</h3>
+
+    <p>
+        Bu etkinliği görüntüleme veya düzenleme yetkiniz bulunmamaktadır.
+    </p>
+
+    <a asp-controller="Dashboard"
+       asp-action="Index"
+       class="btn btn-primary">
+        Dashboard'a Dön
+    </a>
+</div>
