@@ -1,0 +1,44 @@
+@model EventFlow.Models.Event
+
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Etkinlik Detayı";
+}
+
+<div class="container mt-4">
+
+    <h2>@Model.Title</h2>
+
+    <hr />
+
+    <dl class="row">
+
+        <dt class="col-sm-3">Kategori</dt>
+        <dd class="col-sm-9">@Model.Category?.Name</dd>
+
+        <dt class="col-sm-3">Konum</dt>
+        <dd class="col-sm-9">@Model.Location</dd>
+
+        <dt class="col-sm-3">Başlangıç</dt>
+        <dd class="col-sm-9">@Model.StartDate.ToString("dd.MM.yyyy HH:mm")</dd>
+
+        <dt class="col-sm-3">Bitiş</dt>
+        <dd class="col-sm-9">@Model.EndDate.ToString("dd.MM.yyyy HH:mm")</dd>
+
+        <dt class="col-sm-3">Kontenjan</dt>
+        <dd class="col-sm-9">@Model.Capacity</dd>
+
+        <dt class="col-sm-3">Oluşturan</dt>
+        <dd class="col-sm-9">@Model.Organizer?.FullName</dd>
+
+        <dt class="col-sm-3">Açıklama</dt>
+        <dd class="col-sm-9">@Model.Description</dd>
+
+    </dl>
+
+    <a asp-action="Index"
+       class="btn btn-secondary">
+        Geri Dön
+    </a>
+
+</div>

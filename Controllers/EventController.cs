@@ -170,4 +170,81 @@ public class EventController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    [HttpGet]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var eventEntity = await _context.Events
+            .Include(e => e.Category)
+            .FirstOrDefaultAsync(e => e.Id == id);
+
+        if (eventEntity == null)
+            return NotFound();
+
+        var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        if (!User.IsInRole("Admin") &&
+            eventEntity.OrganizerId != currentUserId)
+        {
+            return Forbid();
+        }
+
+        return View(eventEntity);
+    }
+
+    
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [ActionName("Delete")]
+    public async Task<IActionResult> DeleteConfirmed(int id)
+    {
+        var eventEntity = await _context.Events.FindAsync(id);
+
+        if (eventEntity == null)
+            return NotFound();
+
+        var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        if (!User.IsInRole("Admin") &&
+            eventEntity.OrganizerId != currentUserId)
+        {
+            return Forbid();
+        }
+
+        eventEntity.IsActive = false;
+
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Details(int id)
+    {
+        var eventEntity = await _context.Events
+            .Include(e => e.Category)
+            .Include(e => e.Organizer)
+            .FirstOrDefaultAsync(e => e.Id == id && e.IsActive);
+
+        if (eventEntity == null)
+            return NotFound();
+
+        return View(eventEntity);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> MyEvents()
+    {
+        var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        var events = await _context.Events
+            .Include(e => e.Category)
+            .Include(e => e.Organizer)
+            .Where(e => e.IsActive &&
+                        e.OrganizerId == currentUserId)
+            .OrderByDescending(e => e.CreatedAt)
+            .ToListAsync();
+
+        return View(events);
+    }
+
     }
