@@ -20,3 +20,17 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.card {
+    transition: all .25s ease;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 25px rgba(0,0,0,.15);
+}
+
+.card-img-top {
+    border-top-left-radius: .5rem;
+    border-top-right-radius: .5rem;
+}

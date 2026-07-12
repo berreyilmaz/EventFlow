@@ -5,40 +5,70 @@
     ViewData["Title"] = "Etkinlik Detayı";
 }
 
+
 <div class="container mt-4">
 
-    <h2>@Model.Title</h2>
+    <h2 class="mb-4">@Model.Title</h2>
 
-    <hr />
+    <div class="row">
 
-    <dl class="row">
+        <!-- Sol Taraf -->
+        <div class="col-lg-7">
 
-        <dt class="col-sm-3">Kategori</dt>
-        <dd class="col-sm-9">@Model.Category?.Name</dd>
+            <table class="table table-bordered">
 
-        <dt class="col-sm-3">Konum</dt>
-        <dd class="col-sm-9">@Model.Location</dd>
+                <tr>
+                    <th>Kategori</th>
+                    <td>@Model.Category.Name</td>
+                </tr>
 
-        <dt class="col-sm-3">Başlangıç</dt>
-        <dd class="col-sm-9">@Model.StartDate.ToString("dd.MM.yyyy HH:mm")</dd>
+                <tr>
+                    <th>Konum</th>
+                    <td>@Model.Location</td>
+                </tr>
 
-        <dt class="col-sm-3">Bitiş</dt>
-        <dd class="col-sm-9">@Model.EndDate.ToString("dd.MM.yyyy HH:mm")</dd>
+                <tr>
+                    <th>Başlangıç</th>
+                    <td>@Model.StartDate.ToString("dd.MM.yyyy HH:mm")</td>
+                </tr>
 
-        <dt class="col-sm-3">Kontenjan</dt>
-        <dd class="col-sm-9">@Model.Capacity</dd>
+                <tr>
+                    <th>Bitiş</th>
+                    <td>@Model.EndDate.ToString("dd.MM.yyyy HH:mm")</td>
+                </tr>
 
-        <dt class="col-sm-3">Oluşturan</dt>
-        <dd class="col-sm-9">@Model.Organizer?.FullName</dd>
+                <tr>
+                    <th>Kapasite</th>
+                    <td>@Model.Capacity</td>
+                </tr>
 
-        <dt class="col-sm-3">Açıklama</dt>
-        <dd class="col-sm-9">@Model.Description</dd>
+                <tr>
+                    <th>Açıklama</th>
+                    <td>@Model.Description</td>
+                </tr>
 
-    </dl>
+            </table>
 
-    <a asp-action="Index"
-       class="btn btn-secondary">
-        Geri Dön
-    </a>
+        </div>
+
+        <!-- Sağ Taraf -->
+        <div class="col-lg-5 text-center">
+
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <img src="~/uploads/events/@Model.ImageUrl"
+                     class="img-fluid rounded shadow"
+                     style="max-height:450px; object-fit:cover;" />
+            }
+            else
+            {
+                <div class="border rounded p-5 text-muted">
+                    Resim bulunamadı.
+                </div>
+            }
+
+        </div>
+
+    </div>
 
 </div>

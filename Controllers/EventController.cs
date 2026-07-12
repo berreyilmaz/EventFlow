@@ -13,10 +13,14 @@ namespace EventFlow.Controllers;
 public class EventController : Controller
 {
     private readonly ApplicationDbContext _context;
+    private readonly IWebHostEnvironment _environment;
 
-    public EventController(ApplicationDbContext context)
+    public EventController(
+        ApplicationDbContext context,
+        IWebHostEnvironment environment)
     {
         _context = context;
+        _environment = environment;
     }
 
     [HttpGet]
@@ -37,6 +41,105 @@ public class EventController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(EventCreateViewModel model)
     {
+       string? imageName = null;
+
+        if (model.Image != null)
+        {
+
+            var allowedExtensions = new[] { ".jpg", ".jpeg", ".png" };
+
+            if (model.Image != null)
+            {
+                var extension = Path.GetExtension(model.Image.FileName).ToLowerInvariant();
+
+                if (!allowedExtensions.Contains(extension))
+                {
+                    ModelState.AddModelError("Image",
+                        "Sadece JPG, JPEG ve PNG dosyaları yüklenebilir.");
+
+                    ViewBag.Categories = new SelectList(
+                        await _context.Categories
+                            .Where(c => c.IsActive)
+                            .OrderBy(c => c.Name)
+                            .ToListAsync(),
+                        "Id",
+                        "Name");
+
+                    return View(model);
+                }
+            }
+
+            if (model.Image.Length > 2 * 1024 * 1024)
+            {
+                ModelState.AddModelError(
+                    "Image",
+                    "Dosya boyutu en fazla 2 MB olabilir.");
+
+                ViewBag.Categories = new SelectList(
+                    await _context.Categories
+                        .Where(c => c.IsActive)
+                        .OrderBy(c => c.Name)
+                        .ToListAsync(),
+                    "Id",
+                    "Name");
+
+                return View(model);
+            }
+
+            var allowedContentTypes = new[]
+            {
+                "image/jpeg",
+                "image/png"
+            };
+
+            if (!allowedContentTypes.Contains(model.Image.ContentType))
+            {
+                ModelState.AddModelError(
+                    "Image",
+                    "Geçersiz dosya türü.");
+
+                ViewBag.Categories = new SelectList(
+                    await _context.Categories
+                        .Where(c => c.IsActive)
+                        .OrderBy(c => c.Name)
+                        .ToListAsync(),
+                    "Id",
+                    "Name");
+
+                return View(model);
+            }
+
+            if (!IsValidImage(model.Image))
+            {
+                ModelState.AddModelError(
+                    "Image",
+                    "Dosya içeriği geçerli bir resim değildir.");
+
+                ViewBag.Categories = new SelectList(
+                    await _context.Categories
+                        .Where(c => c.IsActive)
+                        .OrderBy(c => c.Name)
+                        .ToListAsync(),
+                    "Id",
+                    "Name");
+
+                return View(model);
+            }
+
+            imageName = Guid.NewGuid() + Path.GetExtension(model.Image.FileName);
+
+            var uploadFolder = Path.Combine(
+                _environment.WebRootPath,
+                "uploads",
+                "events");
+
+            var filePath = Path.Combine(uploadFolder, imageName);
+
+            using var stream = new FileStream(filePath, FileMode.Create);
+
+            await model.Image.CopyToAsync(stream);
+        }
+
         if (!ModelState.IsValid)
         {
             ViewBag.Categories = new SelectList(
@@ -50,6 +153,7 @@ public class EventController : Controller
             return View(model);
         }
 
+
         var organizerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
         var eventEntity = new Event
@@ -61,7 +165,8 @@ public class EventController : Controller
             EndDate = model.EndDate,
             Capacity = model.Capacity,
             CategoryId = model.CategoryId,
-            OrganizerId = organizerId!
+            OrganizerId = organizerId!,
+            ImageUrl = imageName,
         };
 
         _context.Events.Add(eventEntity);
@@ -261,4 +366,30 @@ public class EventController : Controller
         return View(events);
     }
 
+    private bool IsValidImage(IFormFile file)
+    {
+        using var stream = file.OpenReadStream();
+
+        Span<byte> header = stackalloc byte[8];
+        stream.Read(header);
+
+        // JPEG
+        if (header[0] == 0xFF &&
+            header[1] == 0xD8 &&
+            header[2] == 0xFF)
+        {
+            return true;
+        }
+
+        // PNG
+        if (header[0] == 0x89 &&
+            header[1] == 0x50 &&
+            header[2] == 0x4E &&
+            header[3] == 0x47)
+        {
+            return true;
+        }
+
+        return false;
+    }
     }

@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
 namespace EventFlow.ViewModels.Event;
 
@@ -25,4 +26,7 @@ public class EventCreateViewModel
     public int Capacity { get; set; }
 
     public int CategoryId { get; set; }
+
+
+    public IFormFile? Image { get; set; }
 }

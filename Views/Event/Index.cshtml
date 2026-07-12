@@ -5,85 +5,109 @@
     ViewData["Title"] = "Etkinlikler";
 }
 
-<div class="d-flex justify-content-between mb-3">
+<div class="d-flex justify-content-between align-items-center mb-4">
 
-    <h2>Etkinlikler</h2>
+    <h2>🎉 Etkinlikler</h2>
 
     <a asp-action="Create"
        class="btn btn-primary">
-
-        Yeni Etkinlik
-
+        + Yeni Etkinlik
     </a>
 
 </div>
 
-<table class="table table-bordered">
+<div class="row">
 
-    <thead>
-
-        <tr>
-
-            <th>Başlık</th>
-
-            <th>Kategori</th>
-
-            <th>Konum</th>
-
-            <th>Kontenjan</th>
-
-            <th>Oluşturan</th>
-
-            <th>İşlemler</th>
-
-        </tr>
-
-
-        
-
-    </thead>
-
-    <tbody>
-
-@foreach(var item in Model)
+@foreach (var item in Model)
 {
-    <tr>
+    <div class="col-lg-4 col-md-6 mb-4">
 
-        <td>@item.Title</td>
+        <div class="card shadow h-100 border-0">
 
-        <td>@item.Category.Name</td>
+            @if (!string.IsNullOrEmpty(item.ImageUrl))
+            {
+                <img src="~/uploads/events/@item.ImageUrl"
+                     class="card-img-top"
+                     style="height:220px; object-fit:cover;" />
+            }
+            else
+            {
+                <img src="https://placehold.co/600x400?text=No+Image"
+                     class="card-img-top"
+                     style="height:220px; object-fit:cover;" />
+            }
 
-        <td>@item.Location</td>
+            <div class="card-body">
 
-        <td>@item.Capacity</td>
+                <h5 class="card-title fw-bold">
+                    @item.Title
+                </h5>
 
-        <td>@item.Organizer.FullName</td>
+                <hr />
 
-        <td>
-        
-            <a asp-action="Details"
-            asp-route-id="@item.Id"
-            class="btn btn-info btn-sm">
-                Detay
-            </a>
+                <p class="mb-2">
+                    📂 <strong>Kategori:</strong>
+                    @item.Category.Name
+                </p>
 
-            <a asp-action="Edit"
-            asp-route-id="@item.Id"
-            class="btn btn-warning btn-sm">
-                Düzenle
-            </a>
+                <p class="mb-2">
+                    📍 <strong>Konum:</strong>
+                    @item.Location
+                </p>
 
-            <a asp-action="Delete"
-            asp-route-id="@item.Id"
-            class="btn btn-danger btn-sm ms-1">
-                Sil
-            </a>
+                <p class="mb-2">
+                    👥 <strong>Kontenjan:</strong>
+                    @item.Capacity
+                </p>
 
-        </td>
+                <p class="mb-0">
+                    👤 <strong>Organizatör:</strong>
+                    @item.Organizer.FullName
+                </p>
 
-    </tr>
+            </div>
+
+            <div class="card-footer bg-white border-0">
+
+                <div class="d-grid gap-2">
+
+                    <a asp-action="Details"
+                       asp-route-id="@item.Id"
+                       class="btn btn-info">
+                        👁️ Detay
+                    </a>
+
+                    <div class="row">
+
+                        <div class="col-6">
+
+                            <a asp-action="Edit"
+                               asp-route-id="@item.Id"
+                               class="btn btn-warning w-100">
+                                ✏️ Düzenle
+                            </a>
+
+                        </div>
+
+                        <div class="col-6">
+
+                            <a asp-action="Delete"
+                               asp-route-id="@item.Id"
+                               class="btn btn-danger w-100">
+                                🗑️ Sil
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
 }
 
-    </tbody>
-
-</table>
+</div>
