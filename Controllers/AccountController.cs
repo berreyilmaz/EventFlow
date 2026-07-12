@@ -85,16 +85,29 @@ public AccountController(
             return RedirectToAction("Index", "Home");
         }
 
-        ModelState.AddModelError("", "Kullanıcı adı veya şifre hatalı.");
+        if (result.IsLockedOut)
+        {
+            ModelState.AddModelError(
+                "",
+                "Hesabınız çok fazla başarısız giriş nedeniyle 5 dakika kilitlendi.");
+
+            return View(model);
+        }
+
+        ModelState.AddModelError(
+            "",
+            "Kullanıcı adı veya şifre hatalı.");
 
         return View(model);
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Logout()
     {
         await _signInManager.SignOutAsync();
-        return RedirectToAction("Index", "Dashboard");
+
+        return RedirectToAction(nameof(Login));
     }
 
     [HttpGet]
