@@ -39,4 +39,11 @@ public class Event
     public string OrganizerId { get; set; } = string.Empty;
 
     public ApplicationUser Organizer { get; set; } = null!;
+
+    public ICollection<Registration> Registrations
+    {
+        get;
+        set;
+    }
+    = new List<Registration>();
 }

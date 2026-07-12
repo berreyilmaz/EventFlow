@@ -9,4 +9,11 @@ public class ApplicationUser : IdentityUser
     public string? ProfileImage { get; set; }
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    public ICollection<Registration> Registrations
+    {
+        get;
+        set;
+    }
+    = new List<Registration>();
 }

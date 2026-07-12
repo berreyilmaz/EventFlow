@@ -328,6 +328,8 @@ public class EventController : Controller
         var eventEntity = await _context.Events
             .Include(e => e.Category)
             .Include(e => e.Organizer)
+            .Include(e => e.Registrations)
+                .ThenInclude(r => r.User)
             .FirstOrDefaultAsync(e => e.Id == id && e.IsActive);
 
         if (eventEntity == null)
@@ -391,5 +393,87 @@ public class EventController : Controller
         }
 
         return false;
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Join(int id)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+
+        var eventEntity = await _context.Events
+            .Include(e => e.Registrations)
+            .FirstOrDefaultAsync(e => e.Id == id);
+
+        if (eventEntity == null)
+            return NotFound();
+
+        // Kullanıcı zaten kayıtlı mı?
+        if (eventEntity.Registrations.Any(r => r.UserId == userId))
+        {
+            TempData["Error"] = "Bu etkinliğe zaten kayıt oldunuz.";
+            return RedirectToAction(nameof(Details), new { id });
+        }
+
+        // Kontenjan dolu mu?
+        if (eventEntity.Registrations.Count >= eventEntity.Capacity)
+        {
+            TempData["Error"] = "Etkinliğin kontenjanı dolmuştur.";
+            return RedirectToAction(nameof(Details), new { id });
+        }
+
+        var registration = new Registration
+        {
+            EventId = id,
+            UserId = userId
+        };
+
+        _context.Registrations.Add(registration);
+
+        await _context.SaveChangesAsync();
+
+        TempData["Success"] = "Etkinliğe başarıyla kayıt oldunuz.";
+
+        return RedirectToAction(nameof(Details), new { id });
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Leave(int id)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+
+        var registration = await _context.Registrations
+            .FirstOrDefaultAsync(r =>
+                r.EventId == id &&
+                r.UserId == userId);
+
+        if (registration == null)
+            return NotFound();
+
+        _context.Registrations.Remove(registration);
+
+        await _context.SaveChangesAsync();
+
+        TempData["Success"] = "Etkinlik kaydınız iptal edildi.";
+
+        return RedirectToAction(nameof(Details), new { id });
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> MyRegistrations()
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        var registrations = await _context.Registrations
+            .Include(r => r.Event)
+                .ThenInclude(e => e.Category)
+            .Include(r => r.Event)
+                .ThenInclude(e => e.Organizer)
+            .Where(r => r.UserId == userId)
+            .OrderByDescending(r => r.RegisteredAt)
+            .ToListAsync();
+
+        return View(registrations);
     }
     }

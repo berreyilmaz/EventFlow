@@ -1,0 +1,73 @@
+@model IEnumerable<EventFlow.Models.Registration>
+
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Katıldığım Etkinlikler";
+}
+
+<h2 class="mb-4">🎟️ Katıldığım Etkinlikler</h2>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        Henüz hiçbir etkinliğe kayıt olmadınız.
+    </div>
+}
+else
+{
+    <div class="row">
+
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4 mb-4">
+
+                <div class="card shadow h-100">
+
+                    @if (!string.IsNullOrEmpty(item.Event.ImageUrl))
+                    {
+                        <img src="~/uploads/events/@item.Event.ImageUrl"
+                             class="card-img-top"
+                             style="height:220px; object-fit:cover;" />
+                    }
+
+                    <div class="card-body">
+
+                        <h5>@item.Event.Title</h5>
+
+                        <p>
+                            📂 @item.Event.Category.Name
+                        </p>
+
+                        <p>
+                            📍 @item.Event.Location
+                        </p>
+
+                        <p>
+                            📅 @item.Event.StartDate.ToString("dd.MM.yyyy")
+                        </p>
+
+                        <p>
+                            👤 @item.Event.Organizer.FullName
+                        </p>
+
+                    </div>
+
+                    <div class="card-footer bg-white">
+
+                        <a asp-action="Details"
+                           asp-route-id="@item.Event.Id"
+                           class="btn btn-primary w-100">
+
+                            Detaya Git
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+        }
+
+    </div>
+}

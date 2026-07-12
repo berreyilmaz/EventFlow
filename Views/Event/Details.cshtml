@@ -10,6 +10,20 @@
 
     <h2 class="mb-4">@Model.Title</h2>
 
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Error"]
+        </div>
+    }
+
     <div class="row">
 
         <!-- Sol Taraf -->
@@ -47,6 +61,20 @@
                     <td>@Model.Description</td>
                 </tr>
 
+                <tr>
+                    <th>Katılımcı</th>
+                    <td>
+                        @Model.Registrations.Count / @Model.Capacity
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>Kalan Kontenjan</th>
+                    <td>
+                        @(Model.Capacity - Model.Registrations.Count)
+                    </td>
+                </tr>
+
             </table>
 
         </div>
@@ -68,6 +96,73 @@
             }
 
         </div>
+
+        @{
+            var currentUserId =
+                User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+            var joined =
+                Model.Registrations.Any(r => r.UserId == currentUserId);
+        }
+
+        @if (joined)
+        {
+            <form asp-action="Leave" method="post">
+                @Html.AntiForgeryToken()
+
+                <input type="hidden"
+                    name="id"
+                    value="@Model.Id" />
+
+                <button class="btn btn-danger">
+                    ❌ Kaydı İptal Et
+                </button>
+            </form>
+        }
+        else
+        {
+            <form asp-action="Join" method="post">
+                @Html.AntiForgeryToken()
+
+                <input type="hidden"
+                    name="id"
+                    value="@Model.Id" />
+
+                <button class="btn btn-success">
+                    🎟️ Etkinliğe Katıl
+                </button>
+            </form>
+        }
+
+     
+
+        <hr />
+
+        <h4>Katılımcılar</h4>
+
+        @if (Model.Registrations.Any())
+        {
+            <ul class="list-group">
+
+                @foreach (var registration in Model.Registrations)
+                {
+                    <li class="list-group-item">
+
+                        @registration.User.FullName
+
+                    </li>
+                }
+
+            </ul>
+        }
+        else
+        {
+            <div class="alert alert-info">
+
+                Henüz katılımcı bulunmuyor.
+
+            </div>
+        }
 
     </div>
 
