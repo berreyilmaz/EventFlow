@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.RateLimiting;
 using System.Threading.RateLimiting;
 using EventFlow.Services;
 using EventFlow.Middleware;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,9 +34,26 @@ builder.Services
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
+    // Cookie Settings
+    options.Cookie.Name = "EventFlow.Auth";
+
+    options.Cookie.HttpOnly = true;
+
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+
+    options.Cookie.SameSite = SameSiteMode.Strict;
+
+    // Authentication
     options.LoginPath = "/Account/Login";
+
     options.AccessDeniedPath = "/Account/AccessDenied";
+
+    // Session
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+
+    options.SlidingExpiration = true;
 });
+
 
 // MVC
 builder.Services.AddControllersWithViews();
