@@ -43,7 +43,7 @@ builder.Services
 
         options.Password.RequiredUniqueChars = 3;
     })
-    
+
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 builder.Services.ConfigureApplicationCookie(options =>
@@ -73,6 +73,10 @@ builder.Services.ConfigureApplicationCookie(options =>
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IAuditService, AuditService>();
+
+builder.Services.AddDataProtection();
+
+builder.Services.AddScoped<DataProtectionService>();
 
 builder.Services.AddRateLimiter(options =>
 {
