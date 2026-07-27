@@ -22,16 +22,30 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services
     .AddIdentity<ApplicationUser, IdentityRole>(options =>
     {
+        // Lockout
         options.Lockout.DefaultLockoutTimeSpan =
             TimeSpan.FromMinutes(5);
 
         options.Lockout.MaxFailedAccessAttempts = 5;
 
         options.Lockout.AllowedForNewUsers = true;
+
+        // Password Policy
+        options.Password.RequiredLength = 8;
+
+        options.Password.RequireDigit = true;
+
+        options.Password.RequireUppercase = true;
+
+        options.Password.RequireLowercase = true;
+
+        options.Password.RequireNonAlphanumeric = true;
+
+        options.Password.RequiredUniqueChars = 3;
     })
+    
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
-
 builder.Services.ConfigureApplicationCookie(options =>
 {
     // Cookie Settings
