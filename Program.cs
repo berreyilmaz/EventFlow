@@ -91,6 +91,13 @@ app.Use(async (context, next) =>
     context.Response.Headers["Permissions-Policy"] =
         "camera=(), microphone=(), geolocation=()";
 
+    context.Response.Headers["Content-Security-Policy"] =
+    "default-src 'self'; " +
+    "script-src 'self'; " +
+    "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; " +
+    "font-src 'self' https://cdn.jsdelivr.net; " +
+    "img-src 'self' data:;";
+
     await next();
 });
 
