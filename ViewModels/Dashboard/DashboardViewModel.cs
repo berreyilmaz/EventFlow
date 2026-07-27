@@ -1,14 +1,16 @@
-using EventFlow.Models;
-
 namespace EventFlow.ViewModels.Dashboard;
 
 public class DashboardViewModel
 {
-    public int TotalCategories { get; set; }
+    public int TotalUsers { get; set; }
 
     public int TotalEvents { get; set; }
 
-    public int TotalUsers { get; set; }
+    public int TotalRegistrations { get; set; }
 
-    public List<EventFlow.Models.Event> RecentEvents { get; set; } = new();
+    public int TotalAuditLogs { get; set; }
+
+    public int UnauthorizedAttempts { get; set; }
+
+    public int TotalExceptions { get; set; }
 }

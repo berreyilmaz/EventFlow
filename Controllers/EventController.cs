@@ -216,7 +216,12 @@ public class EventController : Controller
         if (!User.IsInRole("Admin") &&
             eventEntity.OrganizerId != currentUserId)
         {
-            return Forbid();       
+            await _auditService.LogAsync(
+                "Unauthorized Access",
+                $"Attempted to edit event '{eventEntity.Title}'",
+                HttpContext);
+
+            return Forbid();
         }
 
         ViewBag.Categories = new SelectList(
@@ -273,6 +278,11 @@ public class EventController : Controller
         if (!User.IsInRole("Admin") &&
             eventEntity.OrganizerId != currentUserId)
         {
+            await _auditService.LogAsync(
+                "Unauthorized Access",
+                $"Attempted to edit event '{eventEntity.Title}'",
+                HttpContext);
+
             return Forbid();
         }
 
@@ -309,6 +319,11 @@ public class EventController : Controller
         if (!User.IsInRole("Admin") &&
             eventEntity.OrganizerId != currentUserId)
         {
+            await _auditService.LogAsync(
+                "Unauthorized Access",
+                $"Attempted to delete event '{eventEntity.Title}'",
+                HttpContext);
+
             return Forbid();
         }
 
@@ -331,6 +346,11 @@ public class EventController : Controller
         if (!User.IsInRole("Admin") &&
             eventEntity.OrganizerId != currentUserId)
         {
+            await _auditService.LogAsync(
+                "Unauthorized Access",
+                $"Attempted to delete event '{eventEntity.Title}'",
+                HttpContext);
+
             return Forbid();
         }
 

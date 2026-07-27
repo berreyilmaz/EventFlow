@@ -18,19 +18,28 @@ public class DashboardController : Controller
     {
         var model = new DashboardViewModel
         {
-            TotalCategories = await _context.Categories.CountAsync(c => c.IsActive),
-
-            TotalEvents = await _context.Events.CountAsync(e => e.IsActive),
-
             TotalUsers = await _context.Users.CountAsync(),
 
-            RecentEvents = await _context.Events
-                .Where(e => e.IsActive)
-                .OrderByDescending(e => e.CreatedAt)
-                .Take(5)
-                .ToListAsync()
+            TotalEvents = await _context.Events
+                .Where(x => x.IsActive)
+                .CountAsync(),
+
+            TotalRegistrations = await _context.Registrations.CountAsync(),
+
+            TotalAuditLogs = await _context.AuditLogs.CountAsync(),
+
+            UnauthorizedAttempts = await _context.AuditLogs
+                .CountAsync(x => x.Action == "Unauthorized Access"),
+
+            TotalExceptions = await _context.ExceptionLogs.CountAsync()
         };
 
         return View(model);
+    }
+
+    [HttpGet]
+    public IActionResult TestException()
+    {
+        throw new Exception("This is a test exception.");
     }
 }

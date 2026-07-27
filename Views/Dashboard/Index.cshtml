@@ -1,82 +1,177 @@
 @model EventFlow.ViewModels.Dashboard.DashboardViewModel
 
 @{
-    Layout = "_AdminLayout";
     ViewData["Title"] = "Dashboard";
 }
 
-<div class="container mt-4">
+<h2 class="mb-4">
+    <i class="bi bi-speedometer2"></i>
+    Dashboard
+</h2>
 
-    <h2 class="mb-4">
-        Dashboard
-    </h2>
+<div class="row g-4">
 
-    <div class="row g-4">
+    <!-- Total Users -->
+    <div class="col-lg-4 col-md-6">
+        <div class="card shadow-sm border-0 h-100">
+            <div class="card-body text-center">
 
-        <!-- Kategoriler -->
-        <div class="col-md-4">
+                <i class="bi bi-people-fill text-primary display-5"></i>
 
-            <div class="card shadow border-0 h-100">
+                <h6 class="mt-3 text-muted">
+                    Total Users
+                </h6>
 
-                <div class="card-body text-center">
+                <h2 class="fw-bold">
+                    @Model.TotalUsers
+                </h2>
 
-                    <i class="bi bi-tags fs-1 text-primary"></i>
+            </div>
+        </div>
+    </div>
 
-                    <h5 class="mt-3">
-                        Kategoriler
-                    </h5>
+    <!-- Total Events -->
+    <div class="col-lg-4 col-md-6">
+        <div class="card shadow-sm border-0 h-100">
+            <div class="card-body text-center">
 
-                    <h2 class="fw-bold">
-                        @Model.TotalCategories
-                    </h2>
+                <i class="bi bi-calendar-event text-success display-5"></i>
 
-                </div>
+                <h6 class="mt-3 text-muted">
+                    Active Events
+                </h6>
+
+                <h2 class="fw-bold">
+                    @Model.TotalEvents
+                </h2>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Registrations -->
+    <div class="col-lg-4 col-md-6">
+        <div class="card shadow-sm border-0 h-100">
+            <div class="card-body text-center">
+
+                <i class="bi bi-ticket-perforated text-info display-5"></i>
+
+                <h6 class="mt-3 text-muted">
+                    Registrations
+                </h6>
+
+                <h2 class="fw-bold">
+                    @Model.TotalRegistrations
+                </h2>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Audit Logs -->
+    <div class="col-lg-4 col-md-6">
+        <div class="card shadow-sm border-success h-100">
+            <div class="card-body text-center">
+
+                <i class="bi bi-clipboard-data text-success display-5"></i>
+
+                <h6 class="mt-3 text-muted">
+                    Audit Logs
+                </h6>
+
+                <h2 class="fw-bold text-success">
+                    @Model.TotalAuditLogs
+                </h2>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Unauthorized -->
+    <div class="col-lg-4 col-md-6">
+        <div class="card shadow-sm border-warning h-100">
+            <div class="card-body text-center">
+
+                <i class="bi bi-shield-exclamation text-warning display-5"></i>
+
+                <h6 class="mt-3 text-muted">
+                    Unauthorized Access
+                </h6>
+
+                <h2 class="fw-bold text-warning">
+                    @Model.UnauthorizedAttempts
+                </h2>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Exception Logs -->
+    <div class="col-lg-4 col-md-6">
+        <div class="card shadow-sm border-danger h-100">
+            <div class="card-body text-center">
+
+                <i class="bi bi-bug-fill text-danger display-5"></i>
+
+                <h6 class="mt-3 text-muted">
+                    Exception Logs
+                </h6>
+
+                <h2 class="fw-bold text-danger">
+                    @Model.TotalExceptions
+                </h2>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<hr class="my-5" />
+
+<div class="row">
+
+    <div class="col-md-6">
+
+        <div class="card shadow-sm">
+
+            <div class="card-header bg-dark text-white">
+
+                <i class="bi bi-shield-lock"></i>
+
+                Security Overview
 
             </div>
 
-        </div>
+            <div class="card-body">
 
-        <!-- Etkinlikler -->
-        <div class="col-md-4">
+                <ul class="list-group list-group-flush">
 
-            <div class="card shadow border-0 h-100">
+                    <li class="list-group-item">
+                        ✔ Audit Logging Enabled
+                    </li>
 
-                <div class="card-body text-center">
+                    <li class="list-group-item">
+                        ✔ Authorization Logging Enabled
+                    </li>
 
-                    <i class="bi bi-calendar-event fs-1 text-success"></i>
+                    <li class="list-group-item">
+                        ✔ Exception Logging Enabled
+                    </li>
 
-                    <h5 class="mt-3">
-                        Etkinlikler
-                    </h5>
+                    <li class="list-group-item">
+                        ✔ Rate Limiting Enabled
+                    </li>
 
-                    <h2 class="fw-bold">
-                        @Model.TotalEvents
-                    </h2>
+                    <li class="list-group-item">
+                        ✔ CSP Enabled
+                    </li>
 
-                </div>
+                    <li class="list-group-item">
+                        ✔ Security Headers Enabled
+                    </li>
 
-            </div>
-
-        </div>
-
-        <!-- Kullanıcılar -->
-        <div class="col-md-4">
-
-            <div class="card shadow border-0 h-100">
-
-                <div class="card-body text-center">
-
-                    <i class="bi bi-people fs-1 text-danger"></i>
-
-                    <h5 class="mt-3">
-                        Kullanıcılar
-                    </h5>
-
-                    <h2 class="fw-bold">
-                        @Model.TotalUsers
-                    </h2>
-
-                </div>
+                </ul>
 
             </div>
 
@@ -84,86 +179,36 @@
 
     </div>
 
-    <div class="row mt-5">
+    <div class="col-md-6">
 
-        <div class="col-12">
+        <div class="card shadow-sm">
 
-            <div class="card shadow border-0">
+            <div class="card-header bg-primary text-white">
 
-                <div class="card-header bg-white">
+                <i class="bi bi-info-circle"></i>
 
-                    <h5 class="mb-0">
+                Project Status
 
-                        <i class="bi bi-clock-history me-2"></i>
+            </div>
 
-                        Son Eklenen Etkinlikler
+            <div class="card-body">
 
-                    </h5>
+                <p>
+                    EventFlow is protected with multiple security layers including authentication,
+                    authorization, audit logging, authorization logging, exception logging,
+                    file upload validation, brute force protection, rate limiting,
+                    security headers and Content Security Policy (CSP).
+                </p>
 
-                </div>
+                <div class="progress mt-4" style="height:25px;">
 
-                <div class="card-body">
+                    <div class="progress-bar bg-success"
+                         role="progressbar"
+                         style="width:100%">
 
-                    @if (Model.RecentEvents.Any())
-                    {
-                        <table class="table table-hover align-middle">
+                        Security Features Completed
 
-                            <thead>
-
-                                <tr>
-
-                                    <th>Başlık</th>
-
-                                    <th>Konum</th>
-
-                                    <th>Başlangıç</th>
-
-                                    <th></th>
-
-                                </tr>
-
-                            </thead>
-
-                            <tbody>
-
-                            @foreach (var item in Model.RecentEvents)
-                            {
-                                <tr>
-
-                                    <td>@item.Title</td>
-
-                                    <td>@item.Location</td>
-
-                                    <td>@item.StartDate.ToString("dd.MM.yyyy HH:mm")</td>
-
-                                    <td class="text-end">
-
-                                        <a asp-controller="Event"
-                                           asp-action="Details"
-                                           asp-route-id="@item.Id"
-                                           class="btn btn-sm btn-outline-primary">
-
-                                            Detay
-
-                                        </a>
-
-                                    </td>
-
-                                </tr>
-                            }
-
-                            </tbody>
-
-                        </table>
-                    }
-                    else
-                    {
-                        <div class="alert alert-info mb-0">
-
-                            Henüz oluşturulmuş etkinlik bulunmuyor.
-
-                        </div>
-                    }
+                    </div>
 
                 </div>
 

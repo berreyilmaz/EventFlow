@@ -1,5 +1,4 @@
 using EventFlow.Data;
-using EventFlow.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -7,32 +6,23 @@ using Microsoft.EntityFrameworkCore;
 namespace EventFlow.Controllers;
 
 [Authorize]
-public class AuditController : Controller
+public class ExceptionController : Controller
 {
     private readonly ApplicationDbContext _context;
-    private readonly IAuditService _auditService;
 
-    public AuditController(
-        ApplicationDbContext context,
-        IAuditService auditService)
+    public ExceptionController(ApplicationDbContext context)
     {
         _context = context;
-        _auditService = auditService;
     }
 
     public async Task<IActionResult> Index()
     {
         if (!User.IsInRole("Admin"))
         {
-            await _auditService.LogAsync(
-                "Unauthorized Access",
-                "Attempted to access Audit Logs",
-                HttpContext);
-
             return Forbid();
         }
 
-        var logs = await _context.AuditLogs
+        var logs = await _context.ExceptionLogs
             .OrderByDescending(x => x.CreatedAt)
             .ToListAsync();
 

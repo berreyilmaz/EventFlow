@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.RateLimiting;
 using System.Threading.RateLimiting;
 using EventFlow.Services;
+using EventFlow.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -105,6 +106,8 @@ app.Use(async (context, next) =>
 });
 
 app.UseRouting();
+
+app.UseMiddleware<ExceptionLoggingMiddleware>();
 
 app.UseAuthentication();
 

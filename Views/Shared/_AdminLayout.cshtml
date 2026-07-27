@@ -110,6 +110,21 @@
                         </li>
                     }
 
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link"
+                            asp-controller="Exception"
+                            asp-action="Index">
+
+                                <i class="bi bi-bug"></i>
+
+                                Exception Logs
+
+                            </a>
+                        </li>
+                    }
+
                 </ul>
 
                 <div class="ms-auto d-flex align-items-center">

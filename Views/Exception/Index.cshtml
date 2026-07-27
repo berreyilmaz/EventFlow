@@ -1,0 +1,52 @@
+@model IEnumerable<EventFlow.Models.ExceptionLog>
+
+@{
+    ViewData["Title"] = "System Logs";
+}
+
+<h2 class="mb-4">
+    <i class="bi bi-exclamation-triangle-fill text-danger"></i>
+    System Exception Logs
+</h2>
+
+<table class="table table-striped table-hover table-bordered">
+
+    <thead class="table-dark">
+        <tr>
+            <th>Date</th>
+            <th>User</th>
+            <th>Exception</th>
+            <th>Message</th>
+            <th>Path</th>
+            <th>IP Address</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+@foreach(var log in Model)
+{
+        <tr>
+
+            <td>@log.CreatedAt.ToLocalTime()</td>
+
+            <td>@log.UserName</td>
+
+            <td>
+                <span class="badge bg-danger">
+                    @log.ExceptionType
+                </span>
+            </td>
+
+            <td>@log.Message</td>
+
+            <td>@log.Path</td>
+
+            <td>@log.IpAddress</td>
+
+        </tr>
+}
+
+    </tbody>
+
+</table>
