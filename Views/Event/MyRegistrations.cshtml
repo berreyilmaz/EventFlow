@@ -2,72 +2,107 @@
 
 @{
     Layout = "_AdminLayout";
-    ViewData["Title"] = "Katıldığım Etkinlikler";
+    ViewData["Title"] = "My Registrations";
 }
 
-<h2 class="mb-4">🎟️ Katıldığım Etkinlikler</h2>
+<div class="container mt-4">
 
-@if (!Model.Any())
-{
-    <div class="alert alert-info">
-        Henüz hiçbir etkinliğe kayıt olmadınız.
+    <div class="mb-4">
+
+        <h2 class="fw-bold">
+            <i class="bi bi-ticket-perforated"></i>
+            My Registrations
+        </h2>
+
+        <p class="text-muted mb-0">
+            View the events you have registered for.
+        </p>
+
     </div>
-}
-else
-{
-    <div class="row">
 
-        @foreach (var item in Model)
-        {
-            <div class="col-md-4 mb-4">
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle"></i>
+            You haven't registered for any events yet.
+        </div>
+    }
+    else
+    {
+        <div class="row">
 
-                <div class="card shadow h-100">
+            @foreach (var item in Model)
+            {
+                <div class="col-lg-4 col-md-6 mb-4">
 
-                    @if (!string.IsNullOrEmpty(item.Event.ImageUrl))
-                    {
-                        <img src="~/uploads/events/@item.Event.ImageUrl"
-                             class="card-img-top"
-                             style="height:220px; object-fit:cover;" />
-                    }
+                    <div class="card shadow-sm border-0 h-100 event-card">
 
-                    <div class="card-body">
+                        @if (!string.IsNullOrEmpty(item.Event.ImageUrl))
+                        {
+                            <img src="~/uploads/events/@item.Event.ImageUrl"
+                                 class="card-img-top"
+                                 style="height:220px; object-fit:cover;" />
+                        }
+                        else
+                        {
+                            <img src="https://placehold.co/600x400?text=No+Image"
+                                 class="card-img-top"
+                                 style="height:220px; object-fit:cover;" />
+                        }
 
-                        <h5>@item.Event.Title</h5>
+                        <div class="card-body">
 
-                        <p>
-                            📂 @item.Event.Category.Name
-                        </p>
+                            <h5 class="fw-bold mb-3">
+                                @item.Event.Title
+                            </h5>
 
-                        <p>
-                            📍 @item.Event.Location
-                        </p>
+                            <p class="mb-2">
+                                <i class="bi bi-tags text-primary"></i>
+                                <strong>Category:</strong>
+                                @item.Event.Category.Name
+                            </p>
 
-                        <p>
-                            📅 @item.Event.StartDate.ToString("dd.MM.yyyy")
-                        </p>
+                            <p class="mb-2">
+                                <i class="bi bi-geo-alt text-danger"></i>
+                                <strong>Location:</strong>
+                                @item.Event.Location
+                            </p>
 
-                        <p>
-                            👤 @item.Event.Organizer.FullName
-                        </p>
+                            <p class="mb-2">
+                                <i class="bi bi-calendar-event text-success"></i>
+                                <strong>Date:</strong>
+                                @item.Event.StartDate.ToString("dd MMM yyyy")
+                            </p>
 
-                    </div>
+                            <p class="mb-0">
+                                <i class="bi bi-person-circle text-secondary"></i>
+                                <strong>Organizer:</strong>
+                                @item.Event.Organizer.FullName
+                            </p>
 
-                    <div class="card-footer bg-white">
+                        </div>
 
-                        <a asp-action="Details"
-                           asp-route-id="@item.Event.Id"
-                           class="btn btn-primary w-100">
+                        <div class="card-footer bg-white border-0">
 
-                            Detaya Git
+                            <a asp-action="Details"
+                               asp-route-id="@item.Event.Id"
+                               class="btn btn-primary w-100">
+                                <i class="bi bi-eye"></i>
+                                View Details
+                            </a>
 
-                        </a>
+                        </div>
 
                     </div>
 
                 </div>
+            }
 
-            </div>
-        }
+        </div>
 
-    </div>
-}
+        <p class="text-muted text-center mt-3">
+            Showing <strong>@Model.Count()</strong> registered events.
+        </p>
+    }
+
+</div>

@@ -87,8 +87,9 @@ public AccountController(
 
         if (result.Succeeded)
         {
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Dashboard");
         }
+        
 
         if (result.IsLockedOut)
         {
