@@ -2,6 +2,7 @@ using EventFlow.Models;
 using EventFlow.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace EventFlow.Controllers;
 
@@ -62,13 +63,17 @@ public AccountController(
         return View(model);
     }
 
+    
+
     [HttpGet]
+    [EnableRateLimiting("fixed")]
     public IActionResult Login()
     {
         return View();
     }
 
     [HttpPost]
+    [EnableRateLimiting("fixed")]
     public async Task<IActionResult> Login(LoginViewModel model)
     {
         if (!ModelState.IsValid)
