@@ -33,4 +33,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             .HasForeignKey(r => r.UserId)
             .OnDelete(DeleteBehavior.Restrict);
     }
+
+    public DbSet<AuditLog> AuditLogs { get; set; }
 }

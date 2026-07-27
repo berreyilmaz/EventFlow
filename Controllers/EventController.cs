@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using EventFlow.Models;
 using EventFlow.ViewModels.Event;
+using EventFlow.Services;
+using Microsoft.AspNetCore.Identity;
 
 namespace EventFlow.Controllers;
 
@@ -14,13 +16,20 @@ public class EventController : Controller
 {
     private readonly ApplicationDbContext _context;
     private readonly IWebHostEnvironment _environment;
+    private readonly UserManager<ApplicationUser> _userManager;
+
+    private readonly IAuditService _auditService;
 
     public EventController(
         ApplicationDbContext context,
-        IWebHostEnvironment environment)
+        UserManager<ApplicationUser> userManager,
+        IWebHostEnvironment environment,
+        IAuditService auditService)
     {
         _context = context;
+        _userManager = userManager;
         _environment = environment;
+        _auditService = auditService;
     }
 
     [HttpGet]
@@ -173,6 +182,11 @@ public class EventController : Controller
 
         await _context.SaveChangesAsync();
 
+        await _auditService.LogAsync(
+        "Create Event",
+        $"Created event '{eventEntity.Title}'",
+        HttpContext);
+
         return RedirectToAction(nameof(Index));
     }
 
@@ -272,6 +286,11 @@ public class EventController : Controller
 
         await _context.SaveChangesAsync();
 
+        await _auditService.LogAsync(
+        "Update Event",
+        $"Updated event '{eventEntity.Title}'",
+        HttpContext);
+
         return RedirectToAction(nameof(Index));
     }
 
@@ -318,6 +337,11 @@ public class EventController : Controller
         eventEntity.IsActive = false;
 
         await _context.SaveChangesAsync();
+
+        await _auditService.LogAsync(
+        "Delete Event",
+        $"Deleted event '{eventEntity.Title}'",
+        HttpContext);
 
         return RedirectToAction(nameof(Index));
     }
@@ -432,6 +456,11 @@ public class EventController : Controller
 
         await _context.SaveChangesAsync();
 
+        await _auditService.LogAsync(
+        "Join Event",
+        $"Joined event '{eventEntity.Title}'",
+        HttpContext);
+
         TempData["Success"] = "Etkinliğe başarıyla kayıt oldunuz.";
 
         return RedirectToAction(nameof(Details), new { id });
@@ -451,9 +480,19 @@ public class EventController : Controller
         if (registration == null)
             return NotFound();
 
+        var eventEntity = await _context.Events.FindAsync(id);
+
+        if (eventEntity == null)
+            return NotFound();
+
         _context.Registrations.Remove(registration);
 
         await _context.SaveChangesAsync();
+
+        await _auditService.LogAsync(
+        "Leave Event",
+        $"Left event '{eventEntity.Title}'",
+        HttpContext);
 
         TempData["Success"] = "Etkinlik kaydınız iptal edildi.";
 

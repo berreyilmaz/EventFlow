@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.RateLimiting;
 using System.Threading.RateLimiting;
+using EventFlow.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +37,8 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 // MVC
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<IAuditService, AuditService>();
 
 builder.Services.AddRateLimiter(options =>
 {

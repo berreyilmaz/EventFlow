@@ -98,6 +98,18 @@
                         </a>
                     </li>
 
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link"
+                            asp-controller="Audit"
+                            asp-action="Index">
+                                <i class="bi bi-clipboard-data"></i>
+                                Audit Logs
+                            </a>
+                        </li>
+                    }
+
                 </ul>
 
                 <div class="ms-auto d-flex align-items-center">
