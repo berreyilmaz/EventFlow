@@ -105,6 +105,8 @@
                 Model.Registrations.Any(r => r.UserId == currentUserId);
         }
 
+        <div class="mt-4 d-flex gap-2">
+
         @if (joined)
         {
             <form asp-action="Leave" method="post">
@@ -114,10 +116,20 @@
                     name="id"
                     value="@Model.Id" />
 
-                <button class="btn btn-danger">
-                    ❌ Cancel Registration
+                <button type="submit" class="btn btn-outline-danger">
+                    <i class="bi bi-x-circle"></i>
+                    Cancel Registration
                 </button>
             </form>
+
+            <a asp-action="Ticket"
+            asp-route-registrationId="@ViewBag.UserRegistrationId"
+            class="btn btn-primary">
+
+                <i class="bi bi-ticket-perforated-fill"></i>
+                View Ticket
+
+            </a>
         }
         else
         {
@@ -128,11 +140,14 @@
                     name="id"
                     value="@Model.Id" />
 
-                <button class="btn btn-success">
-                    🎟️ Join Event
+                <button type="submit" class="btn btn-success">
+                    <i class="bi bi-calendar-check"></i>
+                    Join Event
                 </button>
             </form>
         }
+
+    </div>
 
      
 

@@ -18,18 +18,22 @@ public class EventController : Controller
     private readonly IWebHostEnvironment _environment;
     private readonly UserManager<ApplicationUser> _userManager;
 
+    private readonly QrCodeService _qrCodeService;
+
     private readonly IAuditService _auditService;
 
     public EventController(
         ApplicationDbContext context,
         UserManager<ApplicationUser> userManager,
         IWebHostEnvironment environment,
-        IAuditService auditService)
+        IAuditService auditService,
+        QrCodeService qrCodeService)
     {
         _context = context;
         _userManager = userManager;
         _environment = environment;
         _auditService = auditService;
+        _qrCodeService = qrCodeService;
     }
 
     [HttpGet]
@@ -379,6 +383,16 @@ public class EventController : Controller
         if (eventEntity == null)
             return NotFound();
 
+        var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        if (currentUserId != null)
+        {
+            var registration = eventEntity.Registrations
+                .FirstOrDefault(r => r.UserId == currentUserId);
+
+            ViewBag.UserRegistrationId = registration?.Id;
+        }
+
         return View(eventEntity);
     }
 
@@ -481,11 +495,43 @@ public class EventController : Controller
         $"Joined event '{eventEntity.Title}'",
         HttpContext);
 
-        TempData["Success"] = "Etkinliğe başarıyla kayıt oldunuz.";
+        TempData["Success"] = "You have successfully registered for the event.";
 
-        return RedirectToAction(nameof(Details), new { id });
+        return RedirectToAction(nameof(Ticket), new
+        {
+            registrationId = registration.Id
+        });
     }
 
+    [HttpGet]
+    public async Task<IActionResult> Ticket(int registrationId)
+    {
+        var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        var registration = await _context.Registrations
+            .Include(r => r.Event)
+                .ThenInclude(e => e.Category)
+            .Include(r => r.Event)
+                .ThenInclude(e => e.Organizer)
+            .Include(r => r.User)
+            .FirstOrDefaultAsync(r =>
+                r.Id == registrationId &&
+                r.UserId == currentUserId);
+
+        if (registration == null)
+            return NotFound();
+
+        var url = Url.Action(
+            nameof(Ticket),
+            "Event",
+            new { registrationId = registration.Id },
+            Request.Scheme);
+
+        ViewBag.QrCode = Convert.ToBase64String(
+            _qrCodeService.Generate(url!));
+
+        return View(registration);
+    }
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Leave(int id)

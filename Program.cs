@@ -99,6 +99,8 @@ builder.Services.AddRateLimiter(options =>
     });
 });
 
+builder.Services.AddScoped<QrCodeService>();
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
