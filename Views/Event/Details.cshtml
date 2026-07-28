@@ -2,7 +2,7 @@
 
 @{
     Layout = "_AdminLayout";
-    ViewData["Title"] = "Etkinlik Detayı";
+    ViewData["Title"] = "Event Details";
 }
 
 
@@ -91,7 +91,7 @@
             else
             {
                 <div class="border rounded p-5 text-muted">
-                    Resim bulunamadı.
+                    Image not found.
                 </div>
             }
 
@@ -115,7 +115,7 @@
                     value="@Model.Id" />
 
                 <button class="btn btn-danger">
-                    ❌ Kaydı İptal Et
+                    ❌ Cancel Registration
                 </button>
             </form>
         }
@@ -129,7 +129,7 @@
                     value="@Model.Id" />
 
                 <button class="btn btn-success">
-                    🎟️ Etkinliğe Katıl
+                    🎟️ Join Event
                 </button>
             </form>
         }
@@ -138,7 +138,7 @@
 
         <hr />
 
-        <h4>Katılımcılar</h4>
+        <h4>Attendees</h4>
 
         @if (Model.Registrations.Any())
         {
@@ -159,7 +159,7 @@
         {
             <div class="alert alert-info">
 
-                Henüz katılımcı bulunmuyor.
+                No attendees yet.
 
             </div>
         }

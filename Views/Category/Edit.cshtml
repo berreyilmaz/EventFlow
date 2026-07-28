@@ -5,14 +5,14 @@
 }
 
 @{
-    ViewData["Title"] = "Yeni Kategori";
+    ViewData["Title"] = "Edit Category";
 }
 
 
 <div class="container mt-4">
 <input asp-for="Id" type="hidden"/>
 
-    <h2>Kategori Düzenle</h2>
+    <h2>Edit Category</h2>
 
     <hr />
 
@@ -68,12 +68,12 @@
         </div>
 
         <button class="btn btn-success">
-            Kaydet
+            Save
         </button>
 
         <a asp-action="Index"
            class="btn btn-secondary">
-            Vazgeç
+            Cancel
         </a>
 
     </form>

@@ -5,20 +5,21 @@
 }
 
 @{
-    ViewData["Title"] = "Kategoriyi Pasife Al";
+    ViewData["Title"] = "Deactivate Category";
 }
 
 <div class="container mt-4">
 
     <div class="alert alert-warning">
 
-        <h4>Dikkat!</h4>
+        <h4>Warning!</h4>
 
         <p>
 
             <strong>@Model.Name</strong>
 
-            kategorisini pasife almak istediğinize emin misiniz?
+            Are you sure you want to deactivate the category?
+
 
         </p>
 
@@ -30,14 +31,14 @@
 
         <button class="btn btn-danger">
 
-            Evet, Pasife Al
+            Yes, Deactivate
 
         </button>
 
         <a asp-action="Index"
            class="btn btn-secondary">
 
-            Vazgeç
+            Cancel
 
         </a>
 

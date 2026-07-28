@@ -2,10 +2,10 @@
 
 @{
     Layout = "_AdminLayout";
-    ViewData["Title"] = "Yeni Etkinlik";
+    ViewData["Title"] = "Create Event";
 }
 
-<h2>Yeni Etkinlik</h2>
+<h2>Create Event</h2>
 
 <hr />
 
@@ -32,14 +32,14 @@
 
     <div class="mb-3">
         <label asp-for="CategoryId" class="form-label">
-            Kategori
+            Category
         </label>
 
         <select asp-for="CategoryId"
                 asp-items="ViewBag.Categories"
                 class="form-select">
 
-            <option value="">Kategori Seçiniz</option>
+            <option value="">Category Select</option>
 
         </select>
     </div>
@@ -81,13 +81,13 @@
     </div>
 
     <button class="btn btn-success">
-        Etkinliği Oluştur
+        Create Event
     </button>
 
     <a asp-controller="Dashboard"
     asp-action="Index"
     class="btn btn-secondary">
-        İptal
+        Cancel
     </a>
 
 

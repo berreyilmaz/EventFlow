@@ -2,23 +2,23 @@
 
 @{
     Layout = "_AdminLayout";
-    ViewData["Title"] = "Etkinliği Sil";
+    ViewData["Title"] = "Delete Event";
 }
 
-<h2>Etkinliği Sil</h2>
+<h2>Delete Event</h2>
 
 <div class="alert alert-danger">
-    Bu etkinliği silmek istediğinize emin misiniz?
+    Are you sure you want to delete this event?
 </div>
 
 <dl class="row">
-    <dt class="col-sm-3">Başlık</dt>
+    <dt class="col-sm-3">Title</dt>
     <dd class="col-sm-9">@Model.Title</dd>
 
-    <dt class="col-sm-3">Kategori</dt>
+    <dt class="col-sm-3">Category</dt>
     <dd class="col-sm-9">@Model.Category?.Name</dd>
 
-    <dt class="col-sm-3">Konum</dt>
+    <dt class="col-sm-3">Location</dt>
     <dd class="col-sm-9">@Model.Location</dd>
 </dl>
 
@@ -27,12 +27,12 @@
     <input asp-for="Id" type="hidden" />
 
     <button class="btn btn-danger">
-        Evet, Sil
+        Yes, Delete
     </button>
 
     <a asp-action="Index"
        class="btn btn-secondary">
-        Vazgeç
+        Cancel
     </a>
 
 </form>
